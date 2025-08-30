@@ -32,4 +32,4 @@ Commands are delivered to luminaires in real-time using the **MQTT** protocol.
    ├── Schedules jobs via Dkron API
    └── Publishes control messages to MQTT broker
         ↓
-[Dkron Scheduler] -- Triggers jobs --> [MQTT Broker] -- Sends commands --> [Luminaires]
+[Dkron Scheduler] -- Triggers jobs --> command Exec API --> [MQTT Broker] -- Sends commands --> [Luminaires]
