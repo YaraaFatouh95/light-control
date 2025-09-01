@@ -22,12 +22,13 @@ func CreateDkronJob(command models.Command) error {
 		return err
 	}
 
-	scheduleHour := command.ScheduledTime.Hour()
-	scheduleMin := command.ScheduledTime.Minute()
+	//	scheduleHour := command.ScheduledTime.Hour()
+	//	scheduleMin := command.ScheduledTime.Minute()
+	localTime := command.ScheduledTime.Local()
 
 	job := dkronJob{
 		Name:     command.ID.String(),
-		Schedule: fmt.Sprintf("%v %v * * * *", scheduleMin, scheduleHour),
+		Schedule: fmt.Sprintf("0 %v %v * * *", localTime.Minute(), localTime.Hour()),
 		Executor: "http",
 		ExecutorConfig: map[string]string{
 			"url":     "http://localhost:8081/command/exec",

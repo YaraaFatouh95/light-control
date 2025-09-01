@@ -145,14 +145,12 @@ func UpdateCommand(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Schedule Time can not be in the past", http.StatusBadRequest)
 		return
 	}
-
-	command.ID = updatedData.ID
 	if command.ScheduledTime != updatedData.ScheduledTime {
-		command.ScheduledTime = updatedData.ScheduledTime
 		if err := dkron.DeleteDkronJob(command); err != nil {
 			http.Error(w, "Failed to update dkron job: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
+		command.ScheduledTime = updatedData.ScheduledTime
 
 		if err := dkron.CreateDkronJob(command); err != nil {
 			http.Error(w, "Failed to update dkron job: "+err.Error(), http.StatusInternalServerError)
@@ -203,8 +201,6 @@ func DeleteCommand(w http.ResponseWriter, r *http.Request) {
 }
 
 func ExecCommand(w http.ResponseWriter, r *http.Request) {
-
-	// fmt.Println("DKRON SUCCEDED @ " + time.Now().GoString())
 
 	var command models.Command
 	err := json.NewDecoder(r.Body).Decode(&command)
